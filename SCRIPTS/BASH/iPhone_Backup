@@ -1,0 +1,90 @@
+#!/bin/sh
+
+#NOTES
+##############################################################
+# You must install "libimobiledevice", so this script will 
+# work, as intended.
+#
+# Use the following command (on Ubuntu):
+# sudo apt install libimobiledevice6 libimobiledevice-utils 
+##############################################################
+
+clear
+
+echo ""
+echo "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+"
+echo ""
+echo "       iPhone Backup"
+echo ""
+echo "+_+_+_+_+_+_+_+_+_+_+_+_+_+_+"
+
+echo ""
+echo ""
+read -p "Enter iPhone name: " iPhone
+echo ""
+
+#VARS
+##############################################
+DATE=$(date +%F)
+DIR="/home/$USER/Documents/${iPhone}_Backup_${DATE}"
+##############################################
+
+echo "Creating ${DIR}..."
+echo ""
+sleep .5
+
+mkdir -p ${DIR}
+
+echo "Backing up ${iPhone}..."
+echo ""
+sleep .5
+
+echo ""
+
+/usr/bin/idevicebackup2 backup ${DIR}
+
+sleep 1.0
+echo ""
+echo ""
+
+read -p "Would you like to compress your backup? Y/N: " COMP
+
+case ${COMP} in
+  [Yy]* ) echo ""
+          echo "Compressing your backup now..."
+          echo ""
+          sleep .5
+          
+          tar -c --use-compress-program=zstdmt -f ${DIR}.tar.gz ${DIR}
+          
+          echo ""
+          echo "Creating checksum..."
+          echo ""
+          sleep .5
+          
+          sha256sum ${DIR}.tar.gz | tee ${DIR}.tar.gz.sha256sum
+          
+          echo ""
+          echo "Removing uncompressed folder..."
+          echo ""
+          sleep .5
+          
+          rm -rf ${DIR}
+          
+          ;;
+                    
+  [Nn]* ) echo ""
+          echo "All done. Exiting."
+          echo ""
+          sleep 1.0
+          ;;
+
+      * ) echo ""
+          echo "Please enter Yes or No"          
+          echo ""
+          sleep 1.0
+          ;;
+esac
+
+clear
+          

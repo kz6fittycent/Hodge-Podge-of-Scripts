@@ -1,0 +1,21 @@
+#!/bin/sh
+clear
+
+if [ -f /var/run/reboot-required ]
+then
+   echo ""
+   echo "======================="
+   echo "  SYSTEM NEEDS REBOOT"
+   echo "======================="
+   sleep 3.0
+
+else
+
+   echo ""
+   echo "========================"
+   echo "    NO REBOOT NEEDED"
+   echo "========================"
+   sleep 3.0
+fi
+
+clear

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#VARS
+#######################################
+UL=$(tput smul)
+NM=$(tput sgr0)
+ADV=$(curl -ssL https://api.adviceslip.com/advice | awk 'BEGIN{FS="""; OFS="""} {print $(NF-1), $NF}' | cut -d ":" -f7 | cut -d "}" -f1)
+DATE=$(date +%d-%b-%Y)
+#######################################
+
+clear
+echo ""
+echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+echo ""
+echo "      ${UL}Daily advice for ${DATE}, is:${NM} " 
+echo ""
+echo "    ${ADV}" | fmt -w 42
+echo ""
+echo "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+echo ""
